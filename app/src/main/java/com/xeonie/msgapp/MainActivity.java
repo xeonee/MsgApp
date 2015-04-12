@@ -4,8 +4,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Date;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -45,7 +48,8 @@ public class MainActivity extends ActionBarActivity {
         Cursor c= getContentResolver().query(uri, null, null ,null,null);
         startManagingCursor(c);
         String[] body = new String[c.getCount()];
-        String[] number = new String[c.getCount()];
+        String[] sender = new String[c.getCount()];
+        Long[] date = new Long[c.getCount()];
 
         String[] names = c.getColumnNames();
         int count = 0;
@@ -53,7 +57,8 @@ public class MainActivity extends ActionBarActivity {
             for(int i=0;i<c.getCount();i++){
                 //if(c.getString(c.getColumnIndexOrThrow("address")).contains("EKARTL")){
                 body[i]= c.getString(c.getColumnIndexOrThrow("body"));
-                number[i]=c.getString(c.getColumnIndexOrThrow("address"));
+                sender[i]=c.getString(c.getColumnIndexOrThrow("address"));
+                date[i]=Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
                 c.moveToNext();
                 //}
             }
@@ -65,8 +70,8 @@ public class MainActivity extends ActionBarActivity {
 //        Log.d(LOG_TAG, ">>>"+body[1]);
 //        Log.d(LOG_TAG, ">>>"+number[1]);
         for(int i = 0; i < body.length; i++){
-            if(number[i].contains("HLTKRT"))
-                System.out.println(number[i]+" == "+body[i]);
+//            if(number[i].contains("HLTKRT"))
+                System.out.println(sender[i]+" == "+ DateFormat.format("EEEE, MMMM dd, yyyy h:mm:ss aa", new Date(date[i]))+" == "+body[i]);
             }
         System.out.println("Done!!!");
     }
